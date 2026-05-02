@@ -1898,18 +1898,113 @@
   
   <!-- ════════════════════════════════════════════ -->
 
-  <link rel="apple-touch-icon" sizes="192x192" href="./" />
-  <link rel="manifest" href="./manifest.json" />
+
+  <!-- ══════ Firebase SDKs ══════ -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script>
-    if('serviceWorker' in navigator){
-      window.addEventListener('load',function(){
-        navigator.serviceWorker.register('./sw.js').catch(function(){});
-      });
+    if (!firebase.apps.length) {
+      firebase.initializeApp({"apiKey":"AIzaSyB-M9i-jL4UdVdTthBGBPCuvZc33OvJl3g","authDomain":"dockbook-75008.firebaseapp.com","projectId":"dockbook-75008","storageBucket":"dockbook-75008.firebasestorage.app","messagingSenderId":"823956622674","appId":"1:823956622674:web:7c0e8a63cb60a29b5ffe8b"});
     }
+    var auth = firebase.auth();
+    var db   = firebase.firestore();
   </script>
+  <!-- ══════════════════════════ -->
+  <link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}</script>
 </head>
 
 <body>
+  <!-- ════ LOGIN OVERLAY ════ -->
+  <div id="loginOverlay" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#f0fdfa 0%,#ccfbf1 100%);display:flex;align-items:center;justify-content:center;padding:20px;font-family:'Tajawal',sans-serif;">
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+      <div style="position:absolute;top:-120px;right:-80px;width:350px;height:350px;border-radius:50%;background:rgba(13,148,136,.10);"></div>
+      <div style="position:absolute;bottom:-100px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(13,148,136,.08);"></div>
+    </div>
+    <div style="background:white;border-radius:28px;box-shadow:0 24px 72px rgba(13,148,136,.18),0 4px 16px rgba(0,0,0,.06);padding:40px 32px 36px;width:100%;max-width:420px;position:relative;animation:loginCardIn .5s cubic-bezier(.34,1.56,.64,1);">
+      <div style="text-align:center;margin-bottom:28px;">
+        <div style="display:inline-flex;align-items:center;justify-content:center;width:90px;height:90px;border-radius:24px;background:linear-gradient(135deg,#0d9488,#14b8a6);box-shadow:0 8px 28px rgba(13,148,136,.35);margin-bottom:16px;overflow:hidden;">
+          <img src="./icon-192.png" style="width:90px;height:90px;object-fit:cover;border-radius:24px;" onerror="this.style.display='none'" />
+        </div>
+        <div style="font-size:1.7rem;font-weight:800;color:#0d9488;">DocBook</div>
+        <div style="font-size:.85rem;font-weight:600;color:#5f9ea0;margin-top:4px;">لوحة الممرضة</div>
+      </div>
+      <div style="height:1px;background:linear-gradient(to left,transparent,#b2f5ea,transparent);margin-bottom:24px;"></div>
+      <form id="loginForm">
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:.82rem;font-weight:700;color:#134e4a;margin-bottom:7px;"><i class="fas fa-envelope" style="color:#0d9488;margin-left:5px;font-size:.8rem;"></i>البريد الإلكتروني</label>
+          <input id="loginEmail" type="email" required placeholder="example@hospital.com" autocomplete="email" dir="ltr"
+            style="width:100%;padding:13px 16px;border:2px solid #b2f5ea;border-radius:14px;font-family:inherit;font-size:.9rem;color:#134e4a;background:#f0fdfa;outline:none;box-sizing:border-box;transition:border .2s,box-shadow .2s;"
+            onfocus="this.style.borderColor='#0d9488';this.style.boxShadow='0 0 0 3px rgba(13,148,136,.12)'"
+            onblur="this.style.borderColor='#b2f5ea';this.style.boxShadow='none'" />
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="display:block;font-size:.82rem;font-weight:700;color:#134e4a;margin-bottom:7px;"><i class="fas fa-lock" style="color:#0d9488;margin-left:5px;font-size:.8rem;"></i>كلمة المرور</label>
+          <div style="position:relative;">
+            <input id="loginPassword" type="password" required placeholder="••••••••" autocomplete="current-password" dir="ltr"
+              style="width:100%;padding:13px 16px 13px 46px;border:2px solid #b2f5ea;border-radius:14px;font-family:inherit;font-size:.9rem;color:#134e4a;background:#f0fdfa;outline:none;box-sizing:border-box;transition:border .2s,box-shadow .2s;"
+              onfocus="this.style.borderColor='#0d9488';this.style.boxShadow='0 0 0 3px rgba(13,148,136,.12)'"
+              onblur="this.style.borderColor='#b2f5ea';this.style.boxShadow='none'" />
+            <button type="button" onclick="toggleLoginPass()" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#5f9ea0;font-size:.9rem;padding:0;">
+              <i class="fas fa-eye" id="passEyeIcon"></i>
+            </button>
+          </div>
+        </div>
+        <div id="loginError" style="display:none;background:#fee2e2;border:1.5px solid #fca5a5;border-radius:12px;padding:10px 14px;font-size:.8rem;color:#dc2626;margin-bottom:14px;text-align:center;font-weight:600;"></div>
+        <button type="submit" id="loginBtn"
+          style="width:100%;padding:15px;background:linear-gradient(135deg,#0d9488,#14b8a6);color:white;border:none;border-radius:14px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 6px 20px rgba(13,148,136,.35);margin-top:6px;transition:all .2s;"
+          onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 28px rgba(13,148,136,.45)'"
+          onmouseout="this.style.transform='';this.style.boxShadow='0 6px 20px rgba(13,148,136,.35)'">
+          <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+        </button>
+      </form>
+      <p style="text-align:center;font-size:.72rem;color:#5f9ea0;margin-top:20px;margin-bottom:0;">
+        <i class="fas fa-shield-alt" style="margin-left:4px;"></i>DocBook &mdash; نظام حجز المواعيد الطبية
+      </p>
+    </div>
+  </div>
+  <style>
+    @keyframes loginCardIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+  </style>
+  <script>
+    // ── Firebase Auth handlers ──
+    auth.onAuthStateChanged(function(user) {
+      var ov = document.getElementById('loginOverlay');
+      if (user) {
+        if (ov) { ov.style.transition='opacity .35s'; ov.style.opacity='0'; setTimeout(function(){ov.style.display='none';},360); }
+        if (typeof fsSync !== 'undefined') fsSync.loadAll('nurse');
+      } else {
+        if (ov) { ov.style.display='flex'; ov.style.opacity='1'; }
+      }
+    });
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var email = document.getElementById('loginEmail').value.trim();
+      var pass  = document.getElementById('loginPassword').value;
+      var err   = document.getElementById('loginError');
+      if (!email || !pass) { err.textContent='يرجى تعبئة جميع الحقول'; err.style.display='block'; return; }
+      err.style.display='none';
+      var btn = document.getElementById('loginBtn');
+      btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري الدخول...';
+      btn.disabled=true;
+      auth.signInWithEmailAndPassword(email, pass)
+        .catch(function(error) {
+          btn.innerHTML='<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+          btn.disabled=false;
+          var msgs={'auth/user-not-found':'البريد الإلكتروني غير مسجل','auth/wrong-password':'كلمة المرور غير صحيحة','auth/invalid-email':'صيغة البريد الإلكتروني غير صحيحة','auth/too-many-requests':'تجاوزت عدد المحاولات، حاول لاحقاً','auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة'};
+          err.textContent = msgs[error.code] || 'حدث خطأ: ' + error.message;
+          err.style.display='block';
+        });
+    });
+    function toggleLoginPass() {
+      var inp=document.getElementById('loginPassword'),ico=document.getElementById('passEyeIcon');
+      if(inp.type==='password'){inp.type='text';ico.className='fas fa-eye-slash';}
+      else{inp.type='password';ico.className='fas fa-eye';}
+    }
+  </script>
+  <!-- ════ END LOGIN OVERLAY ════ -->
 
 
 
@@ -1926,6 +2021,7 @@
           <div class="header-date" id="nurseHeaderDate">اليوم، التاريخ</div>
         </div>
       </div>
+      <button onclick="docbookSignOut()" title="تسجيل الخروج" style="width:36px;height:36px;border-radius:10px;border:1.5px solid #fca5a5;background:#fee2e2;color:#dc2626;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .15s;margin-left:6px;" onmouseover="this.style.background='#fecaca'" onmouseout="this.style.background='#fee2e2'"><i class="fas fa-sign-out-alt"></i></button>
       <button class="settings-btn" onclick="openSettingsModal()" title="الإعدادات">
         <i class="fas fa-cog"></i>
       </button>
@@ -3056,6 +3152,7 @@
       if (record) {
         record.Status = status;
         lsSet(STORAGE_KEY, records);
+        try{if(typeof fsSync!=='undefined')fsSync.saveRecord(record);}catch(e){}
         notifyOtherTab(STORAGE_KEY);
         allRecords = records;
         showToast('تم تحديث الحالة','success');
@@ -3070,7 +3167,8 @@
     function deleteAppointment(id) {
       const records = lsGet(STORAGE_KEY, []);
       const record = records.find(r=>r.id===id);
-      if (record) { record.Status = 'Cancelled'; lsSet(STORAGE_KEY, records); notifyOtherTab(STORAGE_KEY); allRecords = records; }
+      if (record) { record.Status = 'Cancelled'; lsSet(STORAGE_KEY, records);
+      try{if(typeof fsSync!=='undefined')fsSync.saveRecord(record);}catch(e){} notifyOtherTab(STORAGE_KEY); allRecords = records; }
       showToast('تم إلغاء الموعد','success');
       if (selectedDayStr) renderAgendaForDay(selectedDayStr);
     }
@@ -3080,6 +3178,7 @@
       patient.id = patientId;
       patients[patientId] = patient;
       lsSet(PATIENTS_STORAGE_KEY, patients);
+      try{if(typeof fsSync!=='undefined')fsSync.savePatientDoc(patient);}catch(e){}
       notifyOtherTab(PATIENTS_STORAGE_KEY);
       allPatients = patients;
       showToast('تمت إضافة المريض','success');
@@ -5325,5 +5424,101 @@
 
 
 
+
+  <script>
+  /* ══════════════════════════════════════════
+     Cloudinary — رفع الصور
+  ══════════════════════════════════════════ */
+  window.uploadImageToCloudinary = async function(file) {
+    if (!file) throw new Error('لم يتم اختيار ملف');
+    var fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', 'DockBook');
+    var res = await fetch('https://api.cloudinary.com/v1_1/dbckv4vqo/image/upload', {method:'POST',body:fd});
+    var data = await res.json();
+    if (data.secure_url) return data.secure_url;
+    throw new Error(data.error ? data.error.message : 'فشل الرفع');
+  };
+
+  /* ══════════════════════════════════════════
+     Firestore Sync
+  ══════════════════════════════════════════ */
+  window.fsSync = {
+    role: 'nurse',
+    col: function(sub) {
+      var user = auth.currentUser;
+      if (!user) return null;
+      return db.collection('nurses').doc(user.uid).collection(sub);
+    },
+    saveRecord: function(record) {
+      try {
+        var c = this.col('appointments');
+        if (c && record && record.id) c.doc(String(record.id)).set(record).catch(function(){});
+      } catch(e) {}
+    },
+    savePatientDoc: function(patient) {
+      try {
+        var c = this.col('patients');
+        if (c && patient && patient.id) c.doc(String(patient.id)).set(patient).catch(function(){});
+      } catch(e) {}
+    },
+    deleteRecord: function(id) {
+      try {
+        var c = this.col('appointments');
+        if (c) c.doc(String(id)).delete().catch(function(){});
+      } catch(e) {}
+    },
+    loadAll: function(role) {
+      var self = this;
+      var user = auth.currentUser;
+      if (!user) return;
+      var uid = user.uid;
+      // Load appointments if local storage empty
+      try {
+        var existingRaw = localStorage.getItem('nurseAppointments');
+        var existing = existingRaw ? JSON.parse(existingRaw) : [];
+        if (!existing || existing.length === 0) {
+          db.collection('nurses').doc(uid).collection('appointments').get().then(function(snap) {
+            if (!snap.empty) {
+              var records = snap.docs.map(function(d){return d.data();});
+              localStorage.setItem('nurseAppointments', JSON.stringify(records));
+              if (typeof allRecords !== 'undefined') allRecords = records;
+              if (typeof updateCounts === 'function') updateCounts();
+              if (typeof renderCalendar === 'function') renderCalendar();
+              if (typeof renderBothAppointmentColumns === 'function') renderBothAppointmentColumns();
+              if (typeof renderDoctorCalendar === 'function') renderDoctorCalendar();
+              console.log('✓ Firestore: loaded', records.length, 'appointments');
+            }
+          }).catch(function(e){ console.warn('Firestore load error:', e); });
+        }
+      } catch(e) {}
+      // Load patients if empty
+      try {
+        var existingPRaw = localStorage.getItem('nursePatients');
+        var existingP = existingPRaw ? JSON.parse(existingPRaw) : {};
+        if (!existingP || Object.keys(existingP).length === 0) {
+          db.collection('nurses').doc(uid).collection('patients').get().then(function(snap) {
+            if (!snap.empty) {
+              var patients = {};
+              snap.docs.forEach(function(d){ patients[d.id] = d.data(); });
+              localStorage.setItem('nursePatients', JSON.stringify(patients));
+              if (typeof allPatients !== 'undefined') allPatients = patients;
+              console.log('✓ Firestore: loaded', Object.keys(patients).length, 'patients');
+            }
+          }).catch(function(){});
+        }
+      } catch(e) {}
+    }
+  };
+
+  /* ══ تسجيل الخروج ══ */
+  window.docbookSignOut = function() {
+    if (!confirm('تأكيد تسجيل الخروج؟')) return;
+    auth.signOut().then(function() {
+      localStorage.removeItem('nurseAppointments');
+      localStorage.removeItem('nursePatients');
+    }).catch(function(){});
+  };
+  </script>
 </body>
 </html>
