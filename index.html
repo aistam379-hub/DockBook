@@ -1899,112 +1899,36 @@
   <!-- ════════════════════════════════════════════ -->
 
 
-  <!-- ══════ Firebase SDKs ══════ -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script>
-    if (!firebase.apps.length) {
-      firebase.initializeApp({"apiKey":"AIzaSyB-M9i-jL4UdVdTthBGBPCuvZc33OvJl3g","authDomain":"dockbook-75008.firebaseapp.com","projectId":"dockbook-75008","storageBucket":"dockbook-75008.firebasestorage.app","messagingSenderId":"823956622674","appId":"1:823956622674:web:7c0e8a63cb60a29b5ffe8b"});
-    }
-    var auth = firebase.auth();
-    var db   = firebase.firestore();
-  </script>
-  <!-- ══════════════════════════ -->
-  <link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png" />
-  <link rel="manifest" href="./manifest.json" />
-  <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}</script>
+  <script>if(!firebase.apps.length)firebase.initializeApp({"apiKey":"AIzaSyB-M9i-jL4UdVdTthBGBPCuvZc33OvJl3g","authDomain":"dockbook-75008.firebaseapp.com","projectId":"dockbook-75008","storageBucket":"dockbook-75008.firebasestorage.app","messagingSenderId":"823956622674","appId":"1:823956622674:web:7c0e8a63cb60a29b5ffe8b"});var auth=firebase.auth();var db=firebase.firestore();</script>
+  <link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png"/>
+  <link rel="manifest" href="./manifest.json"/>
+  <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(function(){});</script>
 </head>
 
 <body>
-  <!-- ════ LOGIN OVERLAY ════ -->
-  <div id="loginOverlay" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#f0fdfa 0%,#ccfbf1 100%);display:flex;align-items:center;justify-content:center;padding:20px;font-family:'Tajawal',sans-serif;">
-    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
-      <div style="position:absolute;top:-120px;right:-80px;width:350px;height:350px;border-radius:50%;background:rgba(13,148,136,.10);"></div>
-      <div style="position:absolute;bottom:-100px;left:-80px;width:300px;height:300px;border-radius:50%;background:rgba(13,148,136,.08);"></div>
-    </div>
-    <div style="background:white;border-radius:28px;box-shadow:0 24px 72px rgba(13,148,136,.18),0 4px 16px rgba(0,0,0,.06);padding:40px 32px 36px;width:100%;max-width:420px;position:relative;animation:loginCardIn .5s cubic-bezier(.34,1.56,.64,1);">
+  <div id="loginOverlay" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#f0fdfa,#ccfbf1);display:flex;align-items:center;justify-content:center;padding:20px;font-family:'Tajawal',sans-serif;">
+    <div style="background:white;border-radius:28px;box-shadow:0 24px 72px rgba(13,148,136,.18);padding:40px 32px 36px;width:100%;max-width:420px;animation:loginCardIn .5s cubic-bezier(.34,1.56,.64,1);">
       <div style="text-align:center;margin-bottom:28px;">
-        <div style="display:inline-flex;align-items:center;justify-content:center;width:90px;height:90px;border-radius:24px;background:linear-gradient(135deg,#0d9488,#14b8a6);box-shadow:0 8px 28px rgba(13,148,136,.35);margin-bottom:16px;overflow:hidden;">
-          <img src="./icon-192.png" style="width:90px;height:90px;object-fit:cover;border-radius:24px;" onerror="this.style.display='none'" />
-        </div>
+        <div style="display:inline-flex;width:90px;height:90px;border-radius:24px;background:linear-gradient(135deg,#0d9488,#14b8a6);margin-bottom:16px;overflow:hidden;"><img src="./icon-192.png" style="width:90px;height:90px;object-fit:cover;" onerror="this.style.display='none'"/></div>
         <div style="font-size:1.7rem;font-weight:800;color:#0d9488;">DocBook</div>
         <div style="font-size:.85rem;font-weight:600;color:#5f9ea0;margin-top:4px;">لوحة الممرضة</div>
       </div>
-      <div style="height:1px;background:linear-gradient(to left,transparent,#b2f5ea,transparent);margin-bottom:24px;"></div>
       <form id="loginForm">
-        <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:.82rem;font-weight:700;color:#134e4a;margin-bottom:7px;"><i class="fas fa-envelope" style="color:#0d9488;margin-left:5px;font-size:.8rem;"></i>البريد الإلكتروني</label>
-          <input id="loginEmail" type="email" required placeholder="example@hospital.com" autocomplete="email" dir="ltr"
-            style="width:100%;padding:13px 16px;border:2px solid #b2f5ea;border-radius:14px;font-family:inherit;font-size:.9rem;color:#134e4a;background:#f0fdfa;outline:none;box-sizing:border-box;transition:border .2s,box-shadow .2s;"
-            onfocus="this.style.borderColor='#0d9488';this.style.boxShadow='0 0 0 3px rgba(13,148,136,.12)'"
-            onblur="this.style.borderColor='#b2f5ea';this.style.boxShadow='none'" />
-        </div>
-        <div style="margin-bottom:10px;">
-          <label style="display:block;font-size:.82rem;font-weight:700;color:#134e4a;margin-bottom:7px;"><i class="fas fa-lock" style="color:#0d9488;margin-left:5px;font-size:.8rem;"></i>كلمة المرور</label>
-          <div style="position:relative;">
-            <input id="loginPassword" type="password" required placeholder="••••••••" autocomplete="current-password" dir="ltr"
-              style="width:100%;padding:13px 16px 13px 46px;border:2px solid #b2f5ea;border-radius:14px;font-family:inherit;font-size:.9rem;color:#134e4a;background:#f0fdfa;outline:none;box-sizing:border-box;transition:border .2s,box-shadow .2s;"
-              onfocus="this.style.borderColor='#0d9488';this.style.boxShadow='0 0 0 3px rgba(13,148,136,.12)'"
-              onblur="this.style.borderColor='#b2f5ea';this.style.boxShadow='none'" />
-            <button type="button" onclick="toggleLoginPass()" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#5f9ea0;font-size:.9rem;padding:0;">
-              <i class="fas fa-eye" id="passEyeIcon"></i>
-            </button>
-          </div>
-        </div>
-        <div id="loginError" style="display:none;background:#fee2e2;border:1.5px solid #fca5a5;border-radius:12px;padding:10px 14px;font-size:.8rem;color:#dc2626;margin-bottom:14px;text-align:center;font-weight:600;"></div>
-        <button type="submit" id="loginBtn"
-          style="width:100%;padding:15px;background:linear-gradient(135deg,#0d9488,#14b8a6);color:white;border:none;border-radius:14px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 6px 20px rgba(13,148,136,.35);margin-top:6px;transition:all .2s;"
-          onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 28px rgba(13,148,136,.45)'"
-          onmouseout="this.style.transform='';this.style.boxShadow='0 6px 20px rgba(13,148,136,.35)'">
-          <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
-        </button>
+        <div style="margin-bottom:16px;"><label style="display:block;font-size:.82rem;font-weight:700;color:#134e4a;margin-bottom:7px;">البريد الإلكتروني</label><input id="loginEmail" type="email" required placeholder="example@hospital.com" dir="ltr" style="width:100%;padding:13px 16px;border:2px solid #b2f5ea;border-radius:14px;font-size:.9rem;outline:none;box-sizing:border-box;font-family:inherit;background:#f0fdfa;" onfocus="this.style.borderColor='#0d9488'" onblur="this.style.borderColor='#b2f5ea'"/></div>
+        <div style="margin-bottom:10px;"><label style="display:block;font-size:.82rem;font-weight:700;color:#134e4a;margin-bottom:7px;">كلمة المرور</label><div style="position:relative;"><input id="loginPassword" type="password" required placeholder="••••••••" dir="ltr" style="width:100%;padding:13px 46px 13px 16px;border:2px solid #b2f5ea;border-radius:14px;font-size:.9rem;outline:none;box-sizing:border-box;font-family:inherit;background:#f0fdfa;" onfocus="this.style.borderColor='#0d9488'" onblur="this.style.borderColor='#b2f5ea'"/><button type="button" onclick="var i=document.getElementById('loginPassword');i.type=i.type==='password'?'text':'password';" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#5f9ea0;">👁</button></div></div>
+        <div id="loginError" style="display:none;background:#fee2e2;border-radius:10px;padding:10px;font-size:.8rem;color:#dc2626;margin-bottom:12px;text-align:center;"></div>
+        <button type="submit" id="loginBtn" style="width:100%;padding:14px;background:linear-gradient(135deg,#0d9488,#14b8a6);color:white;border:none;border-radius:14px;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;">تسجيل الدخول</button>
       </form>
-      <p style="text-align:center;font-size:.72rem;color:#5f9ea0;margin-top:20px;margin-bottom:0;">
-        <i class="fas fa-shield-alt" style="margin-left:4px;"></i>DocBook &mdash; نظام حجز المواعيد الطبية
-      </p>
     </div>
   </div>
-  <style>
-    @keyframes loginCardIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-  </style>
+  <style>@keyframes loginCardIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}</style>
   <script>
-    // ── Firebase Auth handlers ──
-    auth.onAuthStateChanged(function(user) {
-      var ov = document.getElementById('loginOverlay');
-      if (user) {
-        if (ov) { ov.style.transition='opacity .35s'; ov.style.opacity='0'; setTimeout(function(){ov.style.display='none';},360); }
-        if (typeof fsSync !== 'undefined') fsSync.loadAll('nurse');
-      } else {
-        if (ov) { ov.style.display='flex'; ov.style.opacity='1'; }
-      }
-    });
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var email = document.getElementById('loginEmail').value.trim();
-      var pass  = document.getElementById('loginPassword').value;
-      var err   = document.getElementById('loginError');
-      if (!email || !pass) { err.textContent='يرجى تعبئة جميع الحقول'; err.style.display='block'; return; }
-      err.style.display='none';
-      var btn = document.getElementById('loginBtn');
-      btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري الدخول...';
-      btn.disabled=true;
-      auth.signInWithEmailAndPassword(email, pass)
-        .catch(function(error) {
-          btn.innerHTML='<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
-          btn.disabled=false;
-          var msgs={'auth/user-not-found':'البريد الإلكتروني غير مسجل','auth/wrong-password':'كلمة المرور غير صحيحة','auth/invalid-email':'صيغة البريد الإلكتروني غير صحيحة','auth/too-many-requests':'تجاوزت عدد المحاولات، حاول لاحقاً','auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة'};
-          err.textContent = msgs[error.code] || 'حدث خطأ: ' + error.message;
-          err.style.display='block';
-        });
-    });
-    function toggleLoginPass() {
-      var inp=document.getElementById('loginPassword'),ico=document.getElementById('passEyeIcon');
-      if(inp.type==='password'){inp.type='text';ico.className='fas fa-eye-slash';}
-      else{inp.type='password';ico.className='fas fa-eye';}
-    }
+    auth.onAuthStateChanged(function(user){var ov=document.getElementById('loginOverlay');if(user){if(ov){ov.style.transition='opacity .3s';ov.style.opacity='0';setTimeout(function(){ov.style.display='none';},300);}if(typeof fsOnLogin==='function')fsOnLogin(user);}else{if(ov){ov.style.display='flex';ov.style.opacity='1';}}});
+    document.getElementById('loginForm').addEventListener('submit',function(e){e.preventDefault();var email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPassword').value,err=document.getElementById('loginError'),btn=document.getElementById('loginBtn');if(!email||!pass){err.textContent='يرجى تعبئة جميع الحقول';err.style.display='block';return;}err.style.display='none';btn.textContent='جاري الدخول...';btn.disabled=true;auth.signInWithEmailAndPassword(email,pass).catch(function(e2){btn.textContent='تسجيل الدخول';btn.disabled=false;var m={'auth/user-not-found':'البريد غير مسجل','auth/wrong-password':'كلمة المرور غير صحيحة','auth/invalid-email':'صيغة البريد غير صحيحة','auth/too-many-requests':'تجاوزت عدد المحاولات','auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة'};err.textContent=m[e2.code]||'خطأ: '+e2.message;err.style.display='block';});});
   </script>
-  <!-- ════ END LOGIN OVERLAY ════ -->
 
 
 
@@ -2021,7 +1945,7 @@
           <div class="header-date" id="nurseHeaderDate">اليوم، التاريخ</div>
         </div>
       </div>
-      <button onclick="docbookSignOut()" title="تسجيل الخروج" style="width:36px;height:36px;border-radius:10px;border:1.5px solid #fca5a5;background:#fee2e2;color:#dc2626;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .15s;margin-left:6px;" onmouseover="this.style.background='#fecaca'" onmouseout="this.style.background='#fee2e2'"><i class="fas fa-sign-out-alt"></i></button>
+      <button onclick="docbookSignOut()" title="تسجيل الخروج" style="width:36px;height:36px;border-radius:10px;border:1.5px solid #fca5a5;background:#fee2e2;color:#dc2626;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:.85rem;transition:all .15s;margin-left:6px;" onmouseover="this.style.background='#fecaca'" onmouseout="this.style.background='#fee2e2'"><i class="fas fa-sign-out-alt"></i></button>
       <button class="settings-btn" onclick="openSettingsModal()" title="الإعدادات">
         <i class="fas fa-cog"></i>
       </button>
@@ -2502,127 +2426,7 @@
       <div class="fab-plus-icon"></div>
     </button>
   </div>
-  <script>
-  (function(){
-    const dial     = document.getElementById('desktopSpeedDial');
-    const mainBtn  = document.getElementById('desktopFabMain');
-    const pillAppt = document.getElementById('deskPillAppt');
-    const pillNotes= document.getElementById('deskPillNotes');
-    let dialOpen = false, isDragging = false, dragMoved = false;
-    let startX, startY, origLeft, origBottom;
-
-    function showDial() {
-      dial.style.display = window.innerWidth >= 768 ? 'flex' : 'none';
-    }
-    showDial();
-    window.addEventListener('resize', showDial);
-
-    // Pills تحسب موقعها من موقع الزر الفعلي على الشاشة
-    function positionDesktopPills() {
-      const btnRect  = mainBtn.getBoundingClientRect();
-      const pills    = document.getElementById('desktopPills');
-      const onRight  = (btnRect.left + btnRect.width/2) > window.innerWidth / 2;
-
-      // فوق الزر
-      const pillsBottom = window.innerHeight - btnRect.top + 12;
-
-      if (onRight) {
-        // الزر على اليمين — Pills تمتد لليسار، محاذاة من اليمين
-        pills.style.right = (window.innerWidth - btnRect.right) + 'px';
-        pills.style.left  = 'auto';
-        pills.style.alignItems = 'flex-end';
-      } else {
-        // الزر على اليسار — Pills تمتد لليمين، محاذاة من اليسار
-        pills.style.left  = btnRect.left + 'px';
-        pills.style.right = 'auto';
-        pills.style.alignItems = 'flex-start';
-      }
-      pills.style.bottom = pillsBottom + 'px';
-      pills.style.top    = 'auto';
-    }
-
-    // Drag
-    mainBtn.addEventListener('mousedown', function(e) {
-      isDragging = true; dragMoved = false;
-      const rect = dial.getBoundingClientRect();
-      startX = e.clientX; startY = e.clientY;
-      origLeft   = rect.left;
-      origBottom = window.innerHeight - rect.bottom;
-      dial.style.transition = 'none';
-      mainBtn.style.cursor = 'grabbing';
-      e.preventDefault();
-    });
-    document.addEventListener('mousemove', function(e) {
-      if (!isDragging) return;
-      const dx = e.clientX - startX, dy = e.clientY - startY;
-      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragMoved = true;
-      let newLeft   = Math.max(8, Math.min(window.innerWidth  - 68, origLeft   + dx));
-      let newBottom = Math.max(8, Math.min(window.innerHeight - 68, origBottom - dy));
-      dial.style.left   = newLeft + 'px';
-      dial.style.bottom = newBottom + 'px';
-      dial.style.right  = 'auto'; dial.style.top = 'auto';
-    });
-    document.addEventListener('mouseup', function() {
-      if (!isDragging) return;
-      isDragging = false;
-      mainBtn.style.cursor = 'grab';
-      if (dialOpen) positionDesktopPills();
-    });
-
-    window.toggleFabDial = function() {
-      if (dragMoved) { dragMoved = false; return; }
-      dialOpen = !dialOpen;
-      if (dialOpen) positionDesktopPills();
-      mainBtn.classList.toggle('open', dialOpen);
-      pillAppt.classList.toggle('visible', dialOpen);
-      pillNotes.classList.toggle('visible', dialOpen);
-      document.getElementById('fabBackdrop').classList.toggle('active', dialOpen);
-    };
-    window.closeFabDial = function() {
-      dialOpen = false;
-      mainBtn.classList.remove('open');
-      pillAppt.classList.remove('visible');
-      pillNotes.classList.remove('visible');
-      document.getElementById('fabBackdrop').classList.remove('active');
-    };
-
-    // Mobile
-    let mobOpen = false;
-    function positionMobPills() {
-      const trigger = document.getElementById('mobFabTrigger');
-      const pills   = document.getElementById('mobPills');
-      const rect    = trigger.getBoundingClientRect();
-      // ضع الـ pills فوق الزر وعلى نفس الجهة
-      pills.style.bottom = (window.innerHeight - rect.top + 10) + 'px';
-      pills.style.right  = (window.innerWidth - rect.right) + 'px';
-      pills.style.left   = 'auto';
-    }
-    window.toggleMobFab = function() {
-      mobOpen = !mobOpen;
-      const trigger = document.getElementById('mobFabTrigger');
-      const pills   = document.getElementById('mobPills');
-      if (mobOpen) positionMobPills();
-      trigger.classList.toggle('open', mobOpen);
-      pills.classList.toggle('active', mobOpen);
-    };
-    window.closeMobFab = function() {
-      mobOpen = false;
-      document.getElementById('mobFabTrigger').classList.remove('open');
-      document.getElementById('mobPills').classList.remove('active');
-    };
-    document.addEventListener('click', function(e) {
-      if (mobOpen && !e.target.closest('.mob-fab-container') && !e.target.closest('#mobPills')) closeMobFab();
-      // أغلق sub-nav المواعيد
-      if (apptSubOpen && !e.target.closest('#mobileAppointments') && !e.target.closest('#mobApptSubNav')
-          && !e.target.closest('#sidebarAppointments') && !e.target.closest('#sidebarApptSub')) {
-        apptSubOpen = false;
-        document.getElementById('sidebarApptSub')?.classList.remove('open');
-        document.getElementById('sidebarAppointments')?.classList.remove('sub-open');
-        document.getElementById('mobApptSubNav')?.classList.remove('open');
-      }
-    });
-  })();
-  </script>
+  
 
   <!-- ========== MODALS ========== -->
 
@@ -3003,26 +2807,32 @@
   </div>
 
 <script>
-    // ================== localStorage Storage Layer ==================
-    // مفاتيح مشتركة بين ملف الدكتور والممرضة
-    const STORAGE_KEY        = 'doctorAppointments';
-    const PATIENTS_STORAGE_KEY = 'doctorPatients';
-    const CLOSED_DAYS_KEY    = 'closedDays';
-    const SETTINGS_KEY       = 'doctorSettings';
-    const NOTES_KEY          = 'sharedNotes';
+    // ================== Firestore Data Layer ==================
+    // جميع البيانات تُقرأ وتُكتب من Firestore مباشرة — لا localStorage
+    window._currentUser = null;
 
+    function fsAppts()     { return db.collection('appointments'); }
+    function fsPatients()  { if(!window._currentUser) return null; return db.collection('users').doc(window._currentUser.uid).collection('patients'); }
+    function fsNotes()     { if(!window._currentUser) return null; return db.collection('users').doc(window._currentUser.uid).collection('data').doc('notes'); }
+    function fsSettings()  { if(!window._currentUser) return null; return db.collection('users').doc(window._currentUser.uid).collection('data').doc('settings'); }
+    function fsClosedDays(){ return db.collection('config').doc('closedDays'); }
+    function fsAlerts()    { return db.collection('alerts').doc('nurseAlert'); }
+
+    // دوال توافقية — تكتب مباشرة لـ Firestore بدل localStorage
     function lsGet(key, fallback) {
-      try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch(e) { return fallback; }
+      // للتوافق مع الكود القديم — ترجع القيمة من الذاكرة فقط
+      if (key === 'doctorAppointments')  return allRecords  || fallback;
+      if (key === 'doctorPatients')      return allPatients || fallback;
+      if (key === 'closedDays')          return closedDays  || fallback;
+      return fallback;
     }
     function lsSet(key, val) {
-      try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) { showToast('خطأ في الحفظ المحلي','error'); }
+      // لا نكتب في localStorage — نحدّث الذاكرة فقط
+      if (key === 'doctorAppointments')  { allRecords  = val; return; }
+      if (key === 'doctorPatients')      { allPatients = val; return; }
+      if (key === 'closedDays')          { closedDays  = val; return; }
     }
-    function notifyOtherTab(key) {
-      // يُطلق storage event لتحديث التاب الآخر فوراً
-      const dummy = '__notify_'+key+'_'+Date.now();
-      localStorage.setItem(dummy, '1');
-      localStorage.removeItem(dummy);
-    }
+    function notifyOtherTab(key) { /* لا حاجة — Firestore يُزامن تلقائياً */ }
 
     // ================== Constants ==================
     const daysAr = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
@@ -3067,156 +2877,149 @@
       setTimeout(()=>toast.classList.add('hidden'), 3000);
     }
 
-    // ================== localStorage CRUD ==================
-    function initializeFirebaseData() {
-      // تحميل البيانات من localStorage
-      allRecords   = lsGet(STORAGE_KEY, []);
-      allPatients  = lsGet(PATIENTS_STORAGE_KEY, {});
-      closedDays   = lsGet(CLOSED_DAYS_KEY, []);
-      const savedSettings = lsGet(SETTINGS_KEY, null);
-      if (savedSettings) { settings = savedSettings; applySettings(); }
+    // ================== Firestore Listeners ==================
+    window.initializeFirebaseData = function initializeFirebaseData() {
+      if (!window._currentUser) return;
 
-      // تحويل تلقائي: Accepted وتاريخه انتهى → NoShow
-      let changed = false;
-      allRecords.forEach(r => {
-        if (r.Status === 'Accepted' && r.id) {
-          const d = parseLocalISODate(normalizeDate(r.Date));
-          if (d < today) { r.Status = 'NoShow'; changed = true; }
-        }
-      });
-      if (changed) lsSet(STORAGE_KEY, allRecords);
-
-      updateCounts(); calculateDensity(); renderCalendar();
-      if (selectedDayStr) renderAgendaForDay(selectedDayStr);
-      if (currentSection === 'appointments') renderBothAppointmentColumns();
-      document.getElementById('totalPatientsCount').textContent = Object.keys(allPatients).length;
-
-      // الاستماع لتغييرات من التاب الآخر (ملف الدكتور)
-      window.addEventListener('storage', function(e) {
-        if (e.key === STORAGE_KEY) {
-          allRecords = lsGet(STORAGE_KEY, []);
-          updateCounts(); calculateDensity(); renderCalendar();
-          if (selectedDayStr) renderAgendaForDay(selectedDayStr);
-          if (currentSection === 'appointments') renderBothAppointmentColumns();
-        }
-        if (e.key === PATIENTS_STORAGE_KEY) {
-          allPatients = lsGet(PATIENTS_STORAGE_KEY, {});
-          document.getElementById('totalPatientsCount').textContent = Object.keys(allPatients).length;
-          if (currentSection === 'patients') renderPatientBook();
-        }
-        if (e.key === CLOSED_DAYS_KEY) {
-          closedDays = lsGet(CLOSED_DAYS_KEY, []);
-          renderCalendar();
-          if (selectedDayStr) updateDayStatusBadge(selectedDayStr);
-        }
-        if (e.key === NOTES_KEY) {
-          if (document.getElementById('notesOverlay')?.style.display === 'flex') window.renderNotes();
-        }
-        // مزامنة الإعدادات من لوحة الطبيب
-        if (e.key === SETTINGS_KEY) {
-          const savedSettings = lsGet(SETTINGS_KEY, null);
-          if (savedSettings) { settings = savedSettings; applySettings(); }
-        }
-      });
-
-      // ─── BroadcastChannel: استقبال إشعارات حجز جديد من صفحة المريض ───
-      try {
-        const _clinicBC = new BroadcastChannel('clinicSync');
-        _clinicBC.onmessage = function(ev) {
-          if (ev.data?.key === STORAGE_KEY) {
-            allRecords = lsGet(STORAGE_KEY, []);
-            updateCounts(); calculateDensity(); renderCalendar();
-            if (selectedDayStr) renderAgendaForDay(selectedDayStr);
-            if (currentSection === 'appointments') renderBothAppointmentColumns();
-            showToast('📥 حجز جديد من المريض!', 'success');
+      // ── المواعيد — onSnapshot فوري ──
+      fsAppts().onSnapshot(function(snap) {
+        allRecords = snap.docs.map(function(d){ return d.data(); });
+        // تحويل Accepted منتهي التاريخ → NoShow
+        let changed = false;
+        allRecords.forEach(function(r) {
+          if (r.Status === 'Accepted' && r.id) {
+            const d = parseLocalISODate(normalizeDate(r.Date));
+            if (d < today) { r.Status = 'NoShow'; changed = true; fsAppts().doc(r.id).update({Status:'NoShow'}); }
           }
-        };
-      } catch(e) {}
-    }
-
-    function saveAppointment(appointment) {
-      const records = lsGet(STORAGE_KEY, []);
-      appointment.id = 'appt_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
-      records.push(appointment);
-      lsSet(STORAGE_KEY, records);
-      notifyOtherTab(STORAGE_KEY);
-      allRecords = records;
-      showToast('تم الحفظ بنجاح','success');
-      updateCounts(); calculateDensity(); renderCalendar();
-      if (selectedDayStr) renderAgendaForDay(selectedDayStr);
-      if (currentSection === 'appointments') renderBothAppointmentColumns();
-    }
-    function updateAppointmentStatus(id, status) {
-      const records = lsGet(STORAGE_KEY, []);
-      const record = records.find(r=>r.id===id);
-      if (record) {
-        record.Status = status;
-        lsSet(STORAGE_KEY, records);
-        try{if(typeof fsSync!=='undefined')fsSync.saveRecord(record);}catch(e){}
-        notifyOtherTab(STORAGE_KEY);
-        allRecords = records;
-        showToast('تم تحديث الحالة','success');
-        if (status==='Accepted') sendWhatsAppConfirmation(record.Phone,record.PatientName,record.Date,record.Slot,record.VisitType);
-        else if (status==='Rejected') sendWhatsAppRejection(record.Phone,record.PatientName,record.Date, record._rejectAltSlots||[]);
-        else if (status==='Cancelled') sendWhatsAppCancellation(record.Phone,record.PatientName,record.Date);
+        });
         updateCounts(); calculateDensity(); renderCalendar();
         if (selectedDayStr) renderAgendaForDay(selectedDayStr);
         if (currentSection === 'appointments') renderBothAppointmentColumns();
-      }
-    }
-    function deleteAppointment(id) {
-      const records = lsGet(STORAGE_KEY, []);
-      const record = records.find(r=>r.id===id);
-      if (record) { record.Status = 'Cancelled'; lsSet(STORAGE_KEY, records);
-      try{if(typeof fsSync!=='undefined')fsSync.saveRecord(record);}catch(e){} notifyOtherTab(STORAGE_KEY); allRecords = records; }
-      showToast('تم إلغاء الموعد','success');
-      if (selectedDayStr) renderAgendaForDay(selectedDayStr);
-    }
-    function savePatient(patient) {
-      const patients = lsGet(PATIENTS_STORAGE_KEY, {});
-      const patientId = patient.id || ('p_'+Date.now()+'_'+Math.random().toString(36).substr(2,6));
-      patient.id = patientId;
-      patients[patientId] = patient;
-      lsSet(PATIENTS_STORAGE_KEY, patients);
-      try{if(typeof fsSync!=='undefined')fsSync.savePatientDoc(patient);}catch(e){}
-      notifyOtherTab(PATIENTS_STORAGE_KEY);
-      allPatients = patients;
-      showToast('تمت إضافة المريض','success');
-      document.getElementById('patientBookModal').classList.add('hidden');
-      document.getElementById('totalPatientsCount').textContent = Object.keys(allPatients).length;
-    }
-    function updatePatient(patientId, updatedData) {
-      const patients = lsGet(PATIENTS_STORAGE_KEY, {});
-      if (patients[patientId]) { Object.assign(patients[patientId], updatedData); lsSet(PATIENTS_STORAGE_KEY, patients); notifyOtherTab(PATIENTS_STORAGE_KEY); allPatients = patients; }
-      showToast('تم التحديث','success');
-    }
-    function deletePatient(id) {
-      if(confirm('حذف المريض؟')) {
-        const patients = lsGet(PATIENTS_STORAGE_KEY, {});
-        delete patients[id];
-        lsSet(PATIENTS_STORAGE_KEY, patients);
-        notifyOtherTab(PATIENTS_STORAGE_KEY);
-        allPatients = patients;
-        showToast('تم الحذف','success');
+        // إشعار حجز جديد
+        if (snap.docChanges) {
+          snap.docChanges().forEach(function(change) {
+            if (change.type === 'added' && change.doc.data().source === 'online') {
+              showToast('📥 حجز جديد من المريض!', 'success');
+            }
+          });
+        }
+      }, function(e){ console.warn('appointments onSnapshot:', e); });
+
+      // ── المرضى — onSnapshot فوري ──
+      fsPatients().onSnapshot(function(snap) {
+        allPatients = {};
+        snap.docs.forEach(function(d){ allPatients[d.id] = d.data(); });
         document.getElementById('totalPatientsCount').textContent = Object.keys(allPatients).length;
         if (currentSection === 'patients') renderPatientBook();
-      }
+      }, function(e){ console.warn('patients onSnapshot:', e); });
+
+      // ── الأيام المغلقة ──
+      fsClosedDays().onSnapshot(function(doc) {
+        if (doc.exists && Array.isArray(doc.data().days)) {
+          closedDays = doc.data().days;
+          renderCalendar();
+          if (selectedDayStr) updateDayStatusBadge(selectedDayStr);
+        }
+      }, function(e){ console.warn('closedDays onSnapshot:', e); });
+
+      // ── الإعدادات ──
+      fsSettings().onSnapshot(function(doc) {
+        if (doc.exists) { settings = Object.assign({title:'لوحة الممرضة', logo:null}, doc.data()); applySettings(); }
+      }, function(e){ console.warn('settings onSnapshot:', e); });
+
+      // ── الملاحظات ──
+      fsNotes().onSnapshot(function(doc) {
+        if (document.getElementById('notesOverlay')?.style.display === 'flex') window.renderNotes();
+      }, function(e){ console.warn('notes onSnapshot:', e); });
+
+      // ── تنبيهات الطبيب ──
+      fsAlerts().onSnapshot(function(doc) {
+        if (!doc.exists) return;
+        const alert = doc.data();
+        if (!alert || !alert.label) return;
+        const banner     = document.getElementById('doctorAlertBanner');
+        const bannerInner= document.getElementById('alertBannerInner');
+        const title      = document.getElementById('alertBannerTitle');
+        const sub        = document.getElementById('alertBannerSub');
+        if (!banner) return;
+        title.textContent = alert.label || 'تنبيه';
+        sub.textContent   = alert.desc  || 'تنبيه من الدكتور';
+        const typeMap = { next:'type-next', enter:'type-enter', custom:'type-custom' };
+        bannerInner.className = 'alert-banner-inner ' + (typeMap[alert.type] || 'type-custom');
+        banner.classList.add('show');
+      }, function(e){ console.warn('alerts onSnapshot:', e); });
+
+      updateCounts(); calculateDensity(); renderCalendar();
+      if (selectedDayStr) renderAgendaForDay(selectedDayStr);
+      if (currentSection === 'appointments') renderBothAppointmentColumns();
+    }
+
+    function saveAppointment(appointment) {
+      appointment.id = 'appt_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
+      appointment.createdAt = Date.now();
+      fsAppts().doc(appointment.id).set(appointment)
+        .then(function(){ showToast('تم الحفظ بنجاح','success'); })
+        .catch(function(e){ showToast('خطأ في الحفظ: '+e.message,'error'); });
+    }
+    function updateAppointmentStatus(id, status) {
+      fsAppts().doc(id).update({Status: status})
+        .then(function(){
+          showToast('تم تحديث الحالة','success');
+          const record = allRecords.find(r=>r.id===id);
+          if (record) {
+            record.Status = status;
+            if (status==='Accepted') sendWhatsAppConfirmation(record.Phone,record.PatientName,record.Date,record.Slot,record.VisitType);
+            else if (status==='Rejected') sendWhatsAppRejection(record.Phone,record.PatientName,record.Date, record._rejectAltSlots||[]);
+            else if (status==='Cancelled') sendWhatsAppCancellation(record.Phone,record.PatientName,record.Date);
+          }
+        })
+        .catch(function(e){ showToast('خطأ في التحديث: '+e.message,'error'); });
+    }
+    function deleteAppointment(id) {
+      fsAppts().doc(id).update({Status:'Cancelled', cancelledAt: Date.now()})
+        .then(function(){ showToast('تم إلغاء الموعد','success'); })
+        .catch(function(e){ showToast('خطأ في الإلغاء: '+e.message,'error'); });
+    }
+    function savePatient(patient) {
+      if (!window._currentUser) return;
+      const patientId = patient.id || ('p_'+Date.now()+'_'+Math.random().toString(36).substr(2,6));
+      patient.id = patientId;
+      fsPatients().doc(patientId).set(patient)
+        .then(function(){
+          showToast('تمت إضافة المريض','success');
+          document.getElementById('patientBookModal').classList.add('hidden');
+        })
+        .catch(function(e){ showToast('خطأ في الحفظ: '+e.message,'error'); });
+    }
+    function updatePatient(patientId, updatedData) {
+      if (!window._currentUser) return;
+      fsPatients().doc(patientId).set(updatedData, {merge: true})
+        .then(function(){ showToast('تم التحديث','success'); })
+        .catch(function(e){ showToast('خطأ في التحديث: '+e.message,'error'); });
+    }
+    function deletePatient(id) {
+      if (!confirm('حذف المريض؟')) return;
+      if (!window._currentUser) return;
+      fsPatients().doc(id).delete()
+        .then(function(){
+          showToast('تم الحذف','success');
+          if (currentSection === 'patients') renderPatientBook();
+        })
+        .catch(function(e){ showToast('خطأ في الحذف: '+e.message,'error'); });
     }
     function toggleDayClosed(dateStr, close) {
-      const list = lsGet(CLOSED_DAYS_KEY, []);
-      if (close) { if (!list.includes(dateStr)) list.push(dateStr); }
-      else { const i=list.indexOf(dateStr); if(i>-1) list.splice(i,1); }
-      lsSet(CLOSED_DAYS_KEY, list);
-      notifyOtherTab(CLOSED_DAYS_KEY);
-      // إشعار فوري لصفحة الحجز عبر BroadcastChannel
-      try { new BroadcastChannel('clinicSync').postMessage({ key: CLOSED_DAYS_KEY }); } catch(e) {}
-      closedDays = list;
-      renderCalendar();
-      if (selectedDayStr) updateDayStatusBadge(selectedDayStr);
+      fsClosedDays().get().then(function(doc) {
+        let list = (doc.exists && Array.isArray(doc.data().days)) ? doc.data().days.slice() : [];
+        if (close) { if (!list.includes(dateStr)) list.push(dateStr); }
+        else       { list = list.filter(function(d){ return d !== dateStr; }); }
+        return fsClosedDays().set({days: list, updatedAt: Date.now()});
+      }).catch(function(e){ showToast('خطأ في تحديث الأيام: '+e.message,'error'); });
     }
     function saveSettingsToFirebase(newSettings) {
-      lsSet(SETTINGS_KEY, newSettings);
-      showToast('تم حفظ الإعدادات','success');
+      if (!window._currentUser) return;
+      fsSettings().set(newSettings, {merge: true})
+        .then(function(){ showToast('تم حفظ الإعدادات','success'); })
+        .catch(function(e){ showToast('خطأ في حفظ الإعدادات: '+e.message,'error'); });
     }
 
     // ================== WhatsApp + SMS Fallback ==================
@@ -3613,8 +3416,7 @@
     let rejectSelectedSlots = []; // [{date:'YYYY-MM-DD', slot:'Morning'|'Evening'}]
 
     function openRejectModal(id) {
-      const records = lsGet(STORAGE_KEY, []);
-      const rec = records.find(r => r.id === id);
+      const rec = allRecords.find(r => r.id === id);
       if (!rec) return;
       rejectModalApptId = id;
       rejectSelectedSlots = [];
@@ -3719,17 +3521,15 @@
 
     window.confirmReject = function() {
       if (!rejectModalApptId) return;
-      const records = lsGet(STORAGE_KEY, []);
-      const rec = records.find(r => r.id === rejectModalApptId);
+      const rec = allRecords.find(r => r.id === rejectModalApptId);
       if (!rec) return;
-      // Store alt slots on the record temporarily for WhatsApp message
       rec._rejectAltSlots = rejectSelectedSlots.slice();
-      rec.Status = 'Rejected';
-      lsSet(STORAGE_KEY, records);
-      notifyOtherTab(STORAGE_KEY);
-      allRecords = records;
-      showToast('تم رفض الموعد','success');
-      sendWhatsAppRejection(rec.Phone, rec.PatientName, rec.Date, rejectSelectedSlots);
+      fsAppts().doc(rejectModalApptId).update({Status:'Rejected', _rejectAltSlots: rejectSelectedSlots.slice()})
+        .then(function(){
+          showToast('تم رفض الموعد','success');
+          sendWhatsAppRejection(rec.Phone, rec.PatientName, rec.Date, rejectSelectedSlots);
+        })
+        .catch(function(e){ showToast('خطأ: '+e.message,'error'); });
       closeRejectModal();
       updateCounts(); calculateDensity(); renderCalendar();
       if (selectedDayStr) renderAgendaForDay(selectedDayStr);
@@ -3928,24 +3728,14 @@
         appointments:[{ date:visitDate, slot:slot, visitType:type, dayName:daysAr[parseLocalISODate(visitDate).getDay()] }],
         firstVisit:visitDate, lastVisit:visitDate, totalVisits:1
       };
-      // حفظ المريض الجديد في localStorage
-      const patients = lsGet(PATIENTS_STORAGE_KEY, {});
-      patients[patientId] = newPatient;
-      lsSet(PATIENTS_STORAGE_KEY, patients);
-      notifyOtherTab(PATIENTS_STORAGE_KEY);
-      allPatients = patients;
-      // تغيير حالة الموعد إلى "Visited" (تمت الزيارة)
+      // حفظ المريض الجديد في Firestore
+      if (!window._currentUser) { showToast('يرجى تسجيل الدخول','error'); return; }
+      fsPatients().doc(patientId).set(newPatient).catch(function(e){ console.warn(e); });
+      allPatients[patientId] = newPatient;
+      // تغيير حالة الموعد إلى "Visited"
       const apptId = visitManagementState.appointmentRecord?.id;
       if(apptId) {
-        const recs = lsGet(STORAGE_KEY, []);
-        const rec = recs.find(r => r.id === apptId);
-        if(rec) {
-          rec.Status = 'Visited';
-          rec.linkedPatientId = patientId;
-          lsSet(STORAGE_KEY, recs);
-          notifyOtherTab(STORAGE_KEY);
-          allRecords = recs;
-        }
+        fsAppts().doc(apptId).update({Status:'Visited', linkedPatientId: patientId}).catch(function(e){ console.warn(e); });
       }
       document.getElementById('visitManagementModal').classList.add('hidden');
       showToast('تمت الزيارة وتم نقل المريض إلى الدفتر','success');
@@ -3966,20 +3756,12 @@
       p.appointments.push({ date:visitDate, slot:slot, visitType:type, dayName:daysAr[parseLocalISODate(visitDate).getDay()] });
       p.totalVisits = p.appointments.length;
       p.lastVisit = visitDate;
-      // تحديث المريض في localStorage
+      // تحديث المريض في Firestore
       updatePatient(p.id, p);
-      // تغيير حالة الموعد إلى "Visited" (تمت الزيارة)
+      // تغيير حالة الموعد إلى "Visited"
       const apptId2 = visitManagementState.appointmentRecord?.id;
       if(apptId2) {
-        const recs = lsGet(STORAGE_KEY, []);
-        const rec = recs.find(r => r.id === apptId2);
-        if(rec) {
-          rec.Status = 'Visited';
-          rec.linkedPatientId = patientId;
-          lsSet(STORAGE_KEY, recs);
-          notifyOtherTab(STORAGE_KEY);
-          allRecords = recs;
-        }
+        fsAppts().doc(apptId2).update({Status:'Visited', linkedPatientId: patientId}).catch(function(e){ console.warn(e); });
       }
       document.getElementById('visitManagementModal').classList.add('hidden');
       showToast('تمت الزيارة وتمت إضافتها لسجل المريض','success');
@@ -5116,25 +4898,24 @@
 
   <!-- ========== NOTES JAVASCRIPT ========== -->
   <script>
-  // جلب الملاحظات من localStorage
+  // ── الملاحظات — Firestore مباشرة ──
   window.loadNotesData = function(callback) {
-    try {
-      const notes = lsGet(NOTES_KEY, []);
-      callback(Array.isArray(notes) ? notes : []);
-    } catch(e) { callback([]); }
-  }
+    if (!window._currentUser) { callback([]); return; }
+    fsNotes().get().then(function(doc) {
+      const notes = (doc.exists && Array.isArray(doc.data().notes)) ? doc.data().notes : [];
+      callback(notes);
+    }).catch(function(){ callback([]); });
+  };
 
-  // حفظ الملاحظات في localStorage
   window.saveNotesData = function(notes, callback) {
-    try {
-      lsSet(NOTES_KEY, notes);
-      notifyOtherTab(NOTES_KEY);
-      if (callback) callback();
-      showToast('تم حفظ الملاحظة بنجاح', 'success');
-    } catch(e) {
-      showToast('فشل حفظ الملاحظة', 'error');
-    }
-  }
+    if (!window._currentUser) { showToast('يرجى تسجيل الدخول','error'); return; }
+    fsNotes().set({notes: notes, updatedAt: Date.now()})
+      .then(function(){
+        showToast('تم حفظ الملاحظة بنجاح', 'success');
+        if (callback) callback();
+      })
+      .catch(function(e){ showToast('فشل حفظ الملاحظة: '+e.message, 'error'); });
+  };
 
   window.openNotesOverlay = function() {
     const el = document.getElementById('notesOverlay');
@@ -5305,219 +5086,26 @@
   </div>
 
   <!-- ===== JS: استقبال تنبيهات الدكتور + عداد الوقت ===== -->
-  <script>
-  (function(){
-
-    // ─── مفاتيح ───
-    const NURSE_ALERT_KEY  = 'nurseAlert';
-    const CUSTOM_ALERT_KEY = 'nurseCustomAlert';
-
-    // ─── SVG أيقونات التنبيه ───
-    const SVG_NEXT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><circle cx="9" cy="7" r="3"/><path d="M6 21v-2a4 4 0 014-4h1"/><path d="M16 17l4-4-4-4M20 13h-7"/></svg>`;
-    const SVG_ENTER = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M15 3H19a2 2 0 012 2v14a2 2 0 01-2 2H15"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>`;
-    const SVG_CUSTOM = `<svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
-
-    // ─── إعدادات التنبيه ───
-    const ALERT_CONFIG = {
-      next:   { icon: SVG_NEXT,   title: 'أدخل المريض التالي', sub: 'تنبيه من الدكتور', cls: 'type-next'   },
-      enter:  { icon: SVG_ENTER,  title: 'ادخلي للغرفة',       sub: 'الدكتور يناديك',   cls: 'type-enter'  },
-      custom: { icon: SVG_CUSTOM, title: '',                    sub: '',                  cls: 'type-custom' },
-    };
-
-    let alertTimer = null;
-
-    // ─── صوت التنبيه ───
-    function playAlertSound(type) {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const gain = ctx.createGain();
-        gain.connect(ctx.destination);
-
-        if (type === 'next') {
-          // ثلاث نبضات صاعدة
-          [0, 0.18, 0.36].forEach((t, i) => {
-            const o = ctx.createOscillator();
-            o.connect(gain);
-            o.type = 'sine';
-            o.frequency.setValueAtTime([520, 660, 800][i], ctx.currentTime + t);
-            gain.gain.setValueAtTime(0.55, ctx.currentTime + t);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + t + 0.14);
-            o.start(ctx.currentTime + t);
-            o.stop(ctx.currentTime + t + 0.15);
-          });
-        } else if (type === 'enter') {
-          // نبضتان قصيرتان حادتان
-          [0, 0.28].forEach(t => {
-            const o = ctx.createOscillator();
-            o.connect(gain);
-            o.type = 'square';
-            o.frequency.setValueAtTime(480, ctx.currentTime + t);
-            gain.gain.setValueAtTime(0.28, ctx.currentTime + t);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + t + 0.22);
-            o.start(ctx.currentTime + t);
-            o.stop(ctx.currentTime + t + 0.24);
-          });
-        } else {
-          // نغمة مميزة للمخصص
-          const o = ctx.createOscillator();
-          o.connect(gain);
-          o.type = 'triangle';
-          o.frequency.setValueAtTime(350, ctx.currentTime);
-          o.frequency.linearRampToValueAtTime(560, ctx.currentTime + 0.25);
-          o.frequency.linearRampToValueAtTime(420, ctx.currentTime + 0.5);
-          gain.gain.setValueAtTime(0.5, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6);
-          o.start(ctx.currentTime);
-          o.stop(ctx.currentTime + 0.65);
-        }
-        setTimeout(() => ctx.close(), 1500);
-      } catch(e) {}
-    }
-
-    // ─── عرض بانر التنبيه ───
-    window.showDoctorAlert = function(type) {
-      const cfg = ALERT_CONFIG[type];
-      if (!cfg) return;
-
-      // قراءة الزر المخصص من localStorage
-      const customData = JSON.parse(localStorage.getItem(CUSTOM_ALERT_KEY) || 'null') || { label: 'تنبيه مخصص', desc: 'تنبيه من الدكتور' };
-      const title = type === 'custom' ? customData.label : cfg.title;
-      const sub   = type === 'custom' ? customData.desc  : cfg.sub;
-
-      document.getElementById('alertBannerIcon').innerHTML    = cfg.icon;
-      document.getElementById('alertBannerTitle').textContent = title;
-      document.getElementById('alertBannerSub').textContent   = sub;
-
-      const inner = document.getElementById('alertBannerInner');
-      inner.className = 'alert-banner-inner ' + cfg.cls;
-
-      document.getElementById('doctorAlertBanner').classList.add('show');
-      playAlertSound(type);
-
-      clearTimeout(alertTimer);
-      alertTimer = setTimeout(() => closeDoctorAlert(), 5000);
-    };
-
-    window.closeDoctorAlert = function() {
-      clearTimeout(alertTimer);
-      document.getElementById('doctorAlertBanner').classList.remove('show');
-    };
-
-    // ─── استقبال عبر localStorage ───
-    window.addEventListener('storage', function(e) {
-      if (e.key === NURSE_ALERT_KEY && e.newValue) {
-        try {
-          const data = JSON.parse(e.newValue);
-          if (data?.type) showDoctorAlert(data.type);
-        } catch(err) {}
-      }
-    });
-
-    // ─── استقبال عبر BroadcastChannel (نفس المتصفح) ───
-    try {
-      const bc = new BroadcastChannel('nurseAlerts');
-      bc.onmessage = (e) => { if (e.data?.type) showDoctorAlert(e.data.type); };
-    } catch(e) {}
-
-  })();
-  </script>
+  
 
 
 
 
   <script>
-  /* ══════════════════════════════════════════
-     Cloudinary — رفع الصور
-  ══════════════════════════════════════════ */
-  window.uploadImageToCloudinary = async function(file) {
-    if (!file) throw new Error('لم يتم اختيار ملف');
-    var fd = new FormData();
-    fd.append('file', file);
-    fd.append('upload_preset', 'DockBook');
-    var res = await fetch('https://api.cloudinary.com/v1_1/dbckv4vqo/image/upload', {method:'POST',body:fd});
-    var data = await res.json();
-    if (data.secure_url) return data.secure_url;
-    throw new Error(data.error ? data.error.message : 'فشل الرفع');
+  window.uploadImageToCloudinary=async function(file){if(!file)throw new Error('لا ملف');var fd=new FormData();fd.append('file',file);fd.append('upload_preset','DockBook');var r=await fetch('https://api.cloudinary.com/v1_1/dbckv4vqo/image/upload',{method:'POST',body:fd});var d=await r.json();if(d.secure_url)return d.secure_url;throw new Error(d.error?d.error.message:'فشل الرفع');};
+
+  // يُستدعى بعد تسجيل الدخول من auth.onAuthStateChanged
+  window.fsOnLogin = function(user) {
+    window._currentUser = user;
+    window.initializeFirebaseData();
   };
 
-  /* ══════════════════════════════════════════
-     Firestore Sync
-  ══════════════════════════════════════════ */
-  window.fsSync = {
-    role: 'nurse',
-    col: function(sub) {
-      var user = auth.currentUser;
-      if (!user) return null;
-      return db.collection('nurses').doc(user.uid).collection(sub);
-    },
-    saveRecord: function(record) {
-      try {
-        var c = this.col('appointments');
-        if (c && record && record.id) c.doc(String(record.id)).set(record).catch(function(){});
-      } catch(e) {}
-    },
-    savePatientDoc: function(patient) {
-      try {
-        var c = this.col('patients');
-        if (c && patient && patient.id) c.doc(String(patient.id)).set(patient).catch(function(){});
-      } catch(e) {}
-    },
-    deleteRecord: function(id) {
-      try {
-        var c = this.col('appointments');
-        if (c) c.doc(String(id)).delete().catch(function(){});
-      } catch(e) {}
-    },
-    loadAll: function(role) {
-      var self = this;
-      var user = auth.currentUser;
-      if (!user) return;
-      var uid = user.uid;
-      // Load appointments if local storage empty
-      try {
-        var existingRaw = localStorage.getItem('nurseAppointments');
-        var existing = existingRaw ? JSON.parse(existingRaw) : [];
-        if (!existing || existing.length === 0) {
-          db.collection('nurses').doc(uid).collection('appointments').get().then(function(snap) {
-            if (!snap.empty) {
-              var records = snap.docs.map(function(d){return d.data();});
-              localStorage.setItem('nurseAppointments', JSON.stringify(records));
-              if (typeof allRecords !== 'undefined') allRecords = records;
-              if (typeof updateCounts === 'function') updateCounts();
-              if (typeof renderCalendar === 'function') renderCalendar();
-              if (typeof renderBothAppointmentColumns === 'function') renderBothAppointmentColumns();
-              if (typeof renderDoctorCalendar === 'function') renderDoctorCalendar();
-              console.log('✓ Firestore: loaded', records.length, 'appointments');
-            }
-          }).catch(function(e){ console.warn('Firestore load error:', e); });
-        }
-      } catch(e) {}
-      // Load patients if empty
-      try {
-        var existingPRaw = localStorage.getItem('nursePatients');
-        var existingP = existingPRaw ? JSON.parse(existingPRaw) : {};
-        if (!existingP || Object.keys(existingP).length === 0) {
-          db.collection('nurses').doc(uid).collection('patients').get().then(function(snap) {
-            if (!snap.empty) {
-              var patients = {};
-              snap.docs.forEach(function(d){ patients[d.id] = d.data(); });
-              localStorage.setItem('nursePatients', JSON.stringify(patients));
-              if (typeof allPatients !== 'undefined') allPatients = patients;
-              console.log('✓ Firestore: loaded', Object.keys(patients).length, 'patients');
-            }
-          }).catch(function(){});
-        }
-      } catch(e) {}
-    }
-  };
-
-  /* ══ تسجيل الخروج ══ */
   window.docbookSignOut = function() {
     if (!confirm('تأكيد تسجيل الخروج؟')) return;
     auth.signOut().then(function() {
-      localStorage.removeItem('nurseAppointments');
-      localStorage.removeItem('nursePatients');
-    }).catch(function(){});
+      window._currentUser = null;
+      allRecords = []; allPatients = {}; closedDays = [];
+    }).catch(function(e){ console.warn(e); });
   };
   </script>
 </body>

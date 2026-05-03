@@ -1,7 +1,7 @@
 {
   "name": "DocBook",
   "short_name": "DocBook",
-  "description": "نظام حجز المواعيد الطبية | لوحة الممرضة",
+  "description": "لوحة الممرضة",
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -10,8 +10,7 @@
   "lang": "ar",
   "dir": "rtl",
   "categories": [
-    "medical",
-    "health"
+    "medical"
   ],
   "icons": [
     {
