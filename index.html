@@ -1926,7 +1926,24 @@
   </div>
   <style>@keyframes loginCardIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}</style>
   <script>
-    auth.onAuthStateChanged(function(user){var ov=document.getElementById('loginOverlay');if(user){if(ov){ov.style.transition='opacity .3s';ov.style.opacity='0';setTimeout(function(){ov.style.display='none';},300);}if(typeof fsOnLogin==='function')fsOnLogin(user);}else{if(ov){ov.style.display='flex';ov.style.opacity='1';}}});
+    auth.onAuthStateChanged(function(user){
+      var ov=document.getElementById('loginOverlay');
+      if(user){
+        db.collection('users').doc(user.uid).get().then(function(doc){
+          if(!doc.exists||doc.data().role!=='nurse'){
+            auth.signOut();
+            if(ov){ov.style.display='flex';ov.style.opacity='1';}
+            alert('ليس لديك صلاحية الدخول لهذه اللوحة');
+            return;
+          }
+          // إخفاء شاشة الدخول وتهيئة البيانات بالتوازي
+          if(ov){ov.style.transition='opacity .3s';ov.style.opacity='0';setTimeout(function(){ov.style.display='none';},300);}
+          if(typeof fsOnLogin==='function') fsOnLogin(user);
+        }).catch(function(){ auth.signOut(); });
+      } else {
+        if(ov){ov.style.display='flex';ov.style.opacity='1';}
+      }
+    });
     document.getElementById('loginForm').addEventListener('submit',function(e){e.preventDefault();var email=document.getElementById('loginEmail').value.trim(),pass=document.getElementById('loginPassword').value,err=document.getElementById('loginError'),btn=document.getElementById('loginBtn');if(!email||!pass){err.textContent='يرجى تعبئة جميع الحقول';err.style.display='block';return;}err.style.display='none';btn.textContent='جاري الدخول...';btn.disabled=true;auth.signInWithEmailAndPassword(email,pass).catch(function(e2){btn.textContent='تسجيل الدخول';btn.disabled=false;var m={'auth/user-not-found':'البريد غير مسجل','auth/wrong-password':'كلمة المرور غير صحيحة','auth/invalid-email':'صيغة البريد غير صحيحة','auth/too-many-requests':'تجاوزت عدد المحاولات','auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة'};err.textContent=m[e2.code]||'خطأ: '+e2.message;err.style.display='block';});});
   </script>
 
@@ -2812,8 +2829,8 @@
     window._currentUser = null;
 
     function fsAppts()     { return db.collection('appointments'); }
-    function fsPatients()  { if(!window._currentUser) return null; return db.collection('users').doc(window._currentUser.uid).collection('patients'); }
-    function fsNotes()     { if(!window._currentUser) return null; return db.collection('users').doc(window._currentUser.uid).collection('data').doc('notes'); }
+    function fsPatients()  { return db.collection('clinic').doc('data').collection('patients'); }
+    function fsNotes()     { if(!window._currentUser) return null; return db.collection('clinic').doc('data').collection('shared').doc('notes'); }
     function fsSettings()  { if(!window._currentUser) return null; return db.collection('users').doc(window._currentUser.uid).collection('data').doc('settings'); }
     function fsClosedDays(){ return db.collection('config').doc('closedDays'); }
     function fsAlerts()    { return db.collection('alerts').doc('nurseAlert'); }
